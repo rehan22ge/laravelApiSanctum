@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +16,9 @@ use App\Http\Controllers\StudentController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:sanctum')->get('/students', [StudentController::class , 'index']);
 
-Route::resource('/students', StudentController::class);
+// Route::resource('/students', StudentController::class);
 
-Route::get('/search/{city}' , [StudentController::class , 'search'] );
+// Route::get('/search/{city}' , [StudentController::class , 'search'] );
+Route::post('/register' , [UserController::class , 'register'] );

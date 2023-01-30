@@ -16,9 +16,16 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/students', [StudentController::class , 'index']);
+Route::middleware(['auth:sanctum'])->group(function () {
 
-// Route::resource('/students', StudentController::class);
+    Route::resource('/students', StudentController::class);
+    Route::get('/search/{city}' , [StudentController::class , 'search'] ); 
+    Route::post('/logout' , [UserController::class , 'logout']);
 
-// Route::get('/search/{city}' , [StudentController::class , 'search'] );
+});
+
 Route::post('/register' , [UserController::class , 'register'] );
+Route::post('/login' , [UserController::class , 'login'] );
+
+// Route::middleware('auth:sanctum')->get('/students', [StudentController::class , 'index']);
+

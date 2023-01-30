@@ -30,4 +30,37 @@ class UserController extends Controller
         ] , 201);
 
     }
+
+    public function logout()
+    {
+        Auth()->user()->tokens()->delete();
+        return response([
+            'message' => 'Succefully Logged Out !!'
+        ]);
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email' , $request->email)->first();
+
+        if (!$user || !Hash::check($request->password , $user->password)) {
+            return response([
+                'message' => 'The provided credentials are incorrect.'
+            ] , 401);
+        }else{
+            $token = $user->createToken('mytoken')->plainTextToken;
+
+            return response([
+                'user' => $user,
+                'token' => $token,
+            ] , 201);
+            
+        }
+
+    }
 }
